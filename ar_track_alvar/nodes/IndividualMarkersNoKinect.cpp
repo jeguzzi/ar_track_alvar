@@ -107,6 +107,28 @@ void getCapCallback (const sensor_msgs::ImageConstPtr & image_msg)
 				//Get the pose relative to the camera
         		int id = (*(marker_detector.markers))[i].GetId(); 
 				Pose p = (*(marker_detector.markers))[i].pose;
+
+				//-- Modified (jacopo)
+
+				double xc = 0; 
+				double yc = 0;
+				double dim = 0;
+
+
+				for (int ii = 0; ii < 4; ii++){
+				    xc += (*(marker_detector.markers))[i].marker_corners_img[ii].x;
+				    yc += (*(marker_detector.markers))[i].marker_corners_img[ii].y;
+				    if(ii != 3)
+				        dim += pow(((*(marker_detector.markers))[i].marker_corners_img[ii].x -  (*(marker_detector.markers))[i].marker_corners_img[ii + 1].x), 2) + pow(((*(marker_detector.markers))[i].marker_corners_img[ii].y -  (*(marker_detector.markers))[i].marker_corners_img[ii + 1].y), 2); 
+				   
+				   else dim += pow(((*(marker_detector.markers))[i].marker_corners_img[ii].x -  (*(marker_detector.markers))[i].marker_corners_img[0].x), 2) + pow(((*(marker_detector.markers))[i].marker_corners_img[ii].y -  (*(marker_detector.markers))[i].marker_corners_img[0].y), 2); 
+				}
+				xc = xc/4;
+                                yc = yc/4;
+				dim = dim/4;
+
+				// --
+
 				double px = p.translation[0]/100.0;
 				double py = p.translation[1]/100.0;
 				double pz = p.translation[2]/100.0;
@@ -194,6 +216,16 @@ void getCapCallback (const sensor_msgs::ImageConstPtr & image_msg)
       			ar_pose_marker.header.frame_id = output_frame;
 			    ar_pose_marker.header.stamp = image_msg->header.stamp;
 			    ar_pose_marker.id = id;
+
+			    //-- Modified (Jacopo)
+
+			    ar_pose_marker.x = xc;
+			    ar_pose_marker.y = yc;
+			    ar_pose_marker.dim = dim;
+
+			    //--
+
+
 			    arPoseMarkers_.markers.push_back (ar_pose_marker);	
 			}
 			arMarkerPub_.publish (arPoseMarkers_);

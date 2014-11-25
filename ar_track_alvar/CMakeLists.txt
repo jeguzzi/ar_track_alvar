@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ar_track_alvar)
+project(ar_track_alvar_idsia)
 
 set(MSG_DEPS
-    ar_track_alvar_msgs
+    ar_track_alvar_msgs_idsia
     std_msgs
     sensor_msgs
     geometry_msgs
@@ -35,7 +35,7 @@ catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ar_track_alvar
   CATKIN_DEPENDS
-        ar_track_alvar_msgs
+        ar_track_alvar_msgs_idsia
         std_msgs
         roscpp
         tf
@@ -59,7 +59,7 @@ include_directories(include
 
 )
 
-set(GENCPP_DEPS ar_track_alvar_msgs_gencpp std_msgs_gencpp sensor_msgs_gencpp geometry_msgs_gencpp visualization_msgs_gencpp)
+set(GENCPP_DEPS ar_track_alvar_msgs_idsia_gencpp std_msgs_gencpp sensor_msgs_gencpp geometry_msgs_gencpp visualization_msgs_gencpp)
 
 add_library(ar_track_alvar
     src/Camera.cpp
